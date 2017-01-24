@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="col-sm-6 col-sm-offset-4">
+	<h2 class="text-align-center"><strong>Registrar</strong></h2>
+<form method="post" action=".">
+  {% csrf_token %}
+  {{ form|crispy }}
+
+  <input class="btn btn-primary" type="submit" value="{% trans 'Enviar' %}" />
+</form>
+</div>
+{% endblock %}

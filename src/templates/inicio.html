@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %} 
+<!-- para cargar todo de la carpeta static (fotos css js) -->
+
+{% block head_title %} Welcome {% endblock %}
+
+<style type="text/css">
+{% block style %}
+	.jumbotron {
+		background-color: #79aec8!important; //#417690
+		color: #FFF!important;
+	}
+	
+	.fa-5x {
+		font-size: 8em !important;
+	}
+{% endblock %}
+</style>
+
+
+{% block jumbotron %}
+
+{% if request.user.is_staff %}
+<table class="table table-striped table-bordered table-hover">
+{% for instance in queryset %}
+<tr>
+<td>{{ forloop.counter }}</td>
+<td>{{ instance }}</td>
+<td>{{ instance.nombre }}</td>
+<td>hace {{ instance.timestamp|timesince }}</td>
+<td>{{ instance.timestamp }}</td>
+</tr><br />
+{% endfor %}
+</table>
+{% else %}
+
+<div class="jumbotron">
+<!-- <div class="container-fluid"> -->
+<div class="container">
+<div class="row">
+	<div class="col-sm-6"> 
+      	<h1>Gypsy Project</h1>
+        <p>This project is based in django and python language</p>
+        <p>
+          <a class="btn btn-lg btn-primary" href="#download" role="button">Download &raquo;</a>
+        </p>
+	</div>
+	<div class="col-sm-6">
+		<iframe width="560" height="315" src="https://www.youtube.com/embed/SwUA6Lxvq7s?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+	</div>
+</div><!-- end row -->
+</div><!-- end container -->
+</div> <!-- end jumbotron -->
+{% endif %}
+{% endblock %}  
+ 
+<!-- <h1>Bienvenidos a Gypsy</h1> -->
+{{ titulo}} <br/>
+user: {{ request.user }}
+<hr/>
+
+{% block content %}
+{% if not request.user.is_staff %}
+<div class="row">
+	<div class="col-sm-3 col-xs-12 pull-right">
+	{% if not user.is_authenticated %}
+		<p class="text-align-center">Subscribirte</p>
+		<form method="POST" action="">{% csrf_token %}
+			<!-- {{ el_form.as_p }} -->
+			{{ el_form|crispy }}
+			<input type="submit" name="reg" value="Enviar" />
+		</form>
+	{% else%}
+		<p class="text-align-center">{{ titulo }}<br />
+		<i class="fa fa-hand-peace-0 fa-5x" aria-hidden="true"></i></p>
+		<i class="fa fa-bullhorn fa-5x" aria-hidden="true"></i>
+	{% endif %}
+		<hr/>
+	</div>
+	<div class="col-sm-3">
+		<p class="text-align-center">Created with Django &amp; Bootstrap<br />
+		<br /><i class="fa fa-bullhorn fa-5x text-align-center" aria-hidden="true"></i></p>
+	</div>
+	<div class="col-sm-3">
+		<p class="text-align-center" >and with many love, of course<br />
+		<br /><img src="{% static 'img/django.jpg' %}" class="img-responsive"></p>
+	</div>
+	<div class="col-sm-3">
+		<p class="text-align-center" >Open sourse, always.<br />
+		<br />
+		<span class="fa-stack fa-5x">
+  			<i class="fa fa-circle-o-notch fa-spin fa-stack-2x"></i>
+  			<i class="fa fa-font-awesome fa-stack-1x" style="color: #47b78c;"></i>
+		</span>
+		</p>
+	</div>
+</div>
+
+{% endif %}
+{% endblock %}
